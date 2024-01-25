@@ -16,34 +16,36 @@ def populate():
     python_pages = [
         {'title': 'Official Python Tutorial',
          'url':'http://docs.python.org/3/tutorial/',
-         'views': 128},
+         'views': 128, 'likes': 64},
         {'title':'How to Think like a Computer Scientist',
          'url':'http://www.greenteapress.com/thinkpython/',
-         'views': 64},
+         'views': 128, 'likes': 64},
         {'title':'Learn Python in 10 Minutes',
          'url':'http://www.korokithakis.net/tutorials/python/',
-         'views': 32} ]
+         'views': 128, 'likes': 64} ]
     
     django_pages = [
         {'title':'Official Django Tutorial',
          'url':'https://docs.djangoproject.com/en/2.1/intro/tutorial01/',
-         'views': 128},
+         'views': 64, 'likes': 32},
         {'title':'Django Rocks',
          'url':'http://www.djangorocks.com/',
-         'views': 64},
+         'views': 64, 'likes': 32},
         {'title':'How to Tango with Django',
          'url':'http://www.tangowithdjango.com/',
-         'views': 32} ]
+         'views': 64, 'likes': 32} ]
     
     other_pages = [
         {'title':'Bottle',
          'url':'http://bottlepy.org/docs/dev/',
-         'views': 128},
+         'views': 32, 'likes': 16},
         {'title':'Flask',
          'url':'http://flask.pocoo.org',
-         'views': 64} ]
+         'views': 32, 'likes': 16} ]
     
-    cats = {'Python': {'pages': python_pages}, 'Django': {'pages': django_pages}, 'Other Frameworks': {'pages': other_pages} }
+    cats = {'Python': {'pages': python_pages, 'views': 128, 'likes': 64}, 
+            'Django': {'pages': django_pages, 'views': 64, 'likes': 32}, 
+            'Other Frameworks': {'pages': other_pages, 'views':32, 'likes':16} }
 
     # If you want to add more categories or pages,
     # add them to the dictionaries above.
@@ -51,7 +53,7 @@ def populate():
     # The code below goes through the cats dictionary, then adds each category,
     # and then adds all the associated pages for that category.
     for cat, cat_data in cats.items():
-        c = add_cat(cat)
+        c = add_cat(cat, cat_data['views'],cat_data['likes'])
         for p in cat_data['pages']:
             add_page(c, p['title'], p['url'], p['views'])
 
@@ -61,14 +63,14 @@ def populate():
             print(f'- {c}: {p}')
 
 def add_page(cat, title, url, views=0):
-    p = Page.objects.get_or_create(category=cat, title=title)[0] 
-    p.url=url
-    p.views=views
+    p = Page.objects.get_or_create(category=cat, title=title, url=url, views=views)[0] 
+    # p.url=url
+    # p.views=views
     p.save()
     return p
 
-def add_cat(name):
-    c = Category.objects.get_or_create(name=name)[0] 
+def add_cat(name, views=0, likes=0):
+    c = Category.objects.get_or_create(name=name, views=views, likes=likes)[0] 
     c.save()
     return c
 
