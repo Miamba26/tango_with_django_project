@@ -130,3 +130,6 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
+
+# Redirect to home URL after login
+LOGIN_URL = 'rango:login'
